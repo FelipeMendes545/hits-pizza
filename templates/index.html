@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cardápio Digital - Hit's Pizza</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="banner">
+    <h1>🍕 Hit's Pizza</h1>
+    <p>🔥 Promoção - Escolha até 2 sabores por R$20 ou R$30</p>
+</div>
+<h2 style="text-align: center;">🔥 Promoção - R$ 20</h2>
+<div class="cardapio">
+    {% for pizza in promocao20 %}
+    <div class="pizza-card">
+        <h3>{{ pizza.nome }}</h3>
+        <img src="{{ url_for('static', filename='imagens/' + pizza.imagem) }}" width="100%" style="border-radius: 10px; height: 180px; object-fit: cover;">
+        <p>{{ pizza.ingredientes }}</p>
+        <strong>De R$ {{ pizza.preco_normal }} por R$ {{ pizza.preco_promocional }}</strong><br>
+        <input type="checkbox" name="sabores" value="{{ pizza.nome }}"> Selecionar
+    </div>
+    {% endfor %}
+</div>
+
+<h2 style="text-align: center;">🔥 Promoção - R$ 30</h2>
+<div class="cardapio">
+    {% for pizza in promocao30 %}
+    <div class="pizza-card">
+        <h3>{{ pizza.nome }}</h3>
+        <img src="{{ url_for('static', filename='imagens/' + pizza.imagem) }}" width="100%" style="border-radius: 10px; height: 180px; object-fit: cover;">
+        <p>{{ pizza.ingredientes }}</p>
+        <strong>De R$ {{ pizza.preco_normal }} por R$ {{ pizza.preco_promocional }}</strong><br>
+        <input type="checkbox" name="sabores" value="{{ pizza.nome }}"> Selecionar
+    </div>
+    {% endfor %}
+</div>
+
+<div style="margin: 20px 0; display: flex; flex-direction: column; align-items: center;">
+    <input type="text" id="nome" placeholder="Digite seu Nome" style="padding: 10px; margin-bottom: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc;">
+    <input type="text" id="endereco" placeholder="Endereço Completo" style="padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc;">
+</div>
+
+<button onclick="enviarPedido()" style="...">Pedir pelo WhatsApp</button>
+
+    <script>
+        function enviarPedido() {
+    let selecionados = [];
+    document.querySelectorAll('input[name="sabores"]:checked').forEach((el) => {
+        selecionados.push(el.value);
+    });
+
+    if (selecionados.length === 0) {
+        alert("Escolha pelo menos 1 sabor!");
+        return;
+    }
+
+    // PEGA OS DADOS DOS INPUTS QUE VOCÊ CRIOU NA LINHA 46 E 47
+    let nome = document.getElementById('nome').value;
+    let endereco = document.getElementById('endereco').value;
+
+    if (nome === "" || endereco === "") {
+        alert("Por favor, preencha seu nome e endereço!");
+        return;
+    }
+
+    // MONTA A MENSAGEM COM TODAS AS INFORMAÇÕES
+    let mensagem = `Olá, me chamo ${nome}.
+Gostaria de uma pizza com: ${selecionados.join(" + ")}.
+Entregar em: ${endereco}`;
+
+    // ABRE O WHATSAPP
+    window.open("https://wa.me/5571992127508?text=" + encodeURIComponent(mensagem), "_blank");
+        }
+    </script>
+</body>
+</html>
