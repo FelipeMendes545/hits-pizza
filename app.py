@@ -46,8 +46,7 @@ promocao30 = [
 
 @app.route("/")
 def index():
-return
-render_template("index.html", promocao20=promocao20, promocao30=promocao30)
+    return render_template("index.html", promocao20=promocao20, promocao30=promocao30)
 
 if __name__ == "__main__":
     app.run(debug=True)
